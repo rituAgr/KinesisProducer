@@ -33,12 +33,12 @@ public class KinesisProducerApplication {
 		//2. PutRecordRequest
 		List<PutRecordsRequestEntry> recordsRequestList = app.getRecordsRequestList();
 		PutRecordsRequest recordsRequest = new PutRecordsRequest();
-		recordsRequest.setStreamName("order-steam");
+		recordsRequest.setStreamName("");
 		recordsRequest.setRecords(recordsRequestList);
 
 		//3. putRecord or putRecords - 500 records in 1 batch
 		PutRecordsResult result = kinesisClient.putRecords(recordsRequest);
-		System.out.println(result);
+		System.out.println(result); // failed record = 0 means successful
 
 		//4. retry mechanism
 		Integer failedRecordCount = result.getFailedRecordCount();
@@ -79,7 +79,7 @@ public class KinesisProducerApplication {
 	private List<Order> getOrderList(){
 		List<Order> orders = new ArrayList<>();
 
-		for (int i=0;i<505;i++){
+		for (int i=0;i<500;i++){
 			Order order = new Order();
 			order.setOrderId(random.nextInt());
 			order.setProduct(productList.get(random.nextInt(productList.size())));
